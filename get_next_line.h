@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarzon- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/28 14:16:05 by agarzon-          #+#    #+#             */
-/*   Updated: 2019/12/02 12:58:27 by agarzon-         ###   ########.fr       */
+/*   Created: 2019/12/02 12:54:33 by agarzon-          #+#    #+#             */
+/*   Updated: 2019/12/02 12:58:48 by agarzon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
-int		get_next_line(int fd, char **line)
-{
-}
+int		get_next_line(int fd, char **line);
+#endif
