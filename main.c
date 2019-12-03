@@ -13,13 +13,11 @@ int	main()
 
 	fd1 = open("leer.txt", O_RDONLY);
 	fd2 = open("leer2.txt", O_RDONLY);
-	//b = get_next_line(fd1, &a);
-	//printf("%s\n%d\n", a, b);
+	b = get_next_line(fd1, &a);
+	printf("%s\n%d\n", a, b);
 	b = get_next_line(fd2, &a);
 	printf("%s\n%d\n", a, b);
-	//b = get_next_line(fd1, &a);
-	//printf("%s\n%d\n", a, b);
-	b = get_next_line(fd2, &a);
+	b = get_next_line(fd1, &a);
 	printf("%s\n%d\n", a, b);
 	b = get_next_line(fd2, &a);
 	printf("%s\n%d\n", a, b);
