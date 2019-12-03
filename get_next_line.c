@@ -6,19 +6,103 @@
 /*   By: agarzon- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 14:16:05 by agarzon-          #+#    #+#             */
-/*   Updated: 2019/12/03 14:49:57 by agarzon-         ###   ########.fr       */
+/*   Updated: 2019/12/03 17:54:39 by agarzon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <stdio.h>
 
-int		get_next_line(int fd, char **line)
+/*
+**Con esta función comprobamos si se ha leido solo una linea y la limpiamos de
+**caracteres sobrantes para que solo salga la linea.
+*/
+static int	ft_comp_new_line(char **s, char **line)
+{
+	/*
+	**Necesitaremos un contandor para recorrer las cadenas. Y una cadena temporal
+	**para que se pueda avanzar por cada salto de linea leido.
+	*/
+	int		l;
+	char	*tmp;
+	/*
+	**Comprobamos el contenido de s, para hacerlo tenemos que utilizar la
+	**sintaxis de los punteros, con (*s) veriamos el contenido de lo que apunta ese puntero.
+	**Debemos avanzar el contador hasta que encontremos el salto de linea o un nulo.
+	*/
+	l = 0;
+	while ((*s)[l] != '\n' && (*s)[l] != '\0')
+		l++;
+	/*
+	**Una vez llegado a uno de esos dos caracteres comprobamos si es el '\n', si es así
+	**nos disponimos a limpiar la linea de los caracteres sobrantes trans el '\n'.
+	*/
+	if ((*s)[l] == '\n')
+	{
+		/*
+		**Guardamos en la cadena que mandamos en el main la linea limpia.
+		**Para eso utilizamos la funcion substr. Mandamos el contenido de s, la posición 0
+		**de esa cadena, y tantos bytes para copiar como el tamaño de l, que es nuestro '\n'
+		*/
+		*line = ft_substr(*s, 0, l);
+		/*
+		**Con la cadena temporal hacemos un duplicado de lo que queda de cadena desde el
+		**primer '\n' encontrado. Liberamos los restos de s, y la dejamos solo con lo que queda.
+		*/
+		tmp = ft_strdup(&(*s)[l]);
+		free(*s);
+		*s = tmp;
+	}
+	else
+		/*
+		**Si en vez de '\n' encontramos el '\0', solo duplicamos la s actual en la cadena
+		**que tenemos en el main.
+		*/
+		*line = ft_strdup(*s);
+	
+	return (1);
+}
+
+
+/*
+**Funcion para comprobar que los x bytes leidos.
+**Es estatica para que mantenga los valores anteriores.
+*/
+static int	ft_comp(int bwr, int fd, char **s, char **line)
+{
+	if (bwr < 0)
+		return (-1);
+	/*
+	**En el else if comprobamos que si los bytes leidos son 0 y que la posición acutal de s
+	**es nula, quiere decir que hemos encontrado el nulo del texto y lo hemos leido todo.
+	*/
+	else if (bwr == 0 && s[fd] == NULL)
+		return (0);
+	/*
+	**Para lo demás el resultado a devolver será 1. El problema es que hay que devolver 1
+	**y la linea leida, por lo que todo caracter que vaya despues del '\n' encontrado,
+	**si lo hubiera, tiene que borrarse.
+	**Como para eso va a necesitarse mas espacio, se crea una nueva funcion. 
+	*/
+	else
+		/*
+		**Le mandamos a la funcion la posicion actual de s (como es una array bi le estamos
+		**mandado la fila correspondiente), que son los bytes leidos hasta ahora.
+		*/
+		return (ft_comp_new_line(&s[fd], line));
+	
+}
+
+
+int			get_next_line(int fd, char **line)
 {
 	/*
 	**creamos una cadena que almacene los bytes leidos.
 	**Al sumarle + 1 aseguramos que siempre va a ver un byte mas
-	**para meter el nulo.
+	**para meter el nulo. 
+	**BUFF_SIZE es una macro que determina cuantos bytes se van a leer, en este caso
+	**esos bytes nos son dados a la hora de compilar con la bandera:
+	**gcc -D <nombre de la macro>=<valor que queremos darle>.
 	*/
 	char buff[BUFF_SIZE + 1];
 	/*
@@ -37,6 +121,7 @@ int		get_next_line(int fd, char **line)
 	**ARRAY BIDIMENSIONAL
 	*/
 	static char *s[4096];
+	char *tmp;
 	/*
 	**en este entero se almecenan el numero de bytes leidos
 	**bwr = bytes was read
@@ -72,10 +157,47 @@ int		get_next_line(int fd, char **line)
 		*/
 		buff[bwr] = '\0';
 		/*
-		**despues almacenamos los bytes leidos en el file descriptor correspondiente
+		**despues almacenamos los primero bytes leidos en la poscion del file descriptor 
+		**correspondiente a nuestra cadena bi. Al iniciar el bucle s[fd] es nulo por lo que
+		**entrará aquí y copiará los primeros bytes leidos y almacenados en buff
 		*/
-		s[fd] = ft_strdup(buff);
+		if (s[fd] == NULL)
+			s[fd] = ft_strdup(buff);
+		/*
+		**A la segunda vuelta del bucle, utilizamos else para guardar
+		**en un puntero nuevo los bytes guardados en s, y le concatenamos los bytes actuales
+		**de buff. Al ser s una cadena estatica el valor no se sobreescribe al igual que 
+		**hace la cadena buff. Entonces lo que hacemos en el else, es añadir a lo que tenemos
+		**acumulado en s, los bytes almacenados en buff.
+		*/
+		else
+		{
+			tmp = ft_strjoin(s[fd], buff);
+			/*
+			**Liberamos s[fd] para borrar de la memoria las versiones incompletas del texto
+			**almacenadas en s[fd]. Asi de esta manera nos aseguramos que cuando acabe el bucle
+			**s[fd] contiene todo el texto y las versiones anteriores no estan ocupando
+			**espacio en la memoria.
+			*/
+			free(s[fd]);
+			s[fd] = tmp;
+		}
+		/*
+		**Con esta prueba vemos si al leer los bytes encuentra un salto de linea.
+		**El bucle no parará hasta que no encuentre el salto de linea. Al primer '\n' parará
+		**independientemente de los bytes mandados a leer.
+		*/
+		if (ft_strchr(s[fd], '\n'))
+			break ;
 	}
-	printf("%s\n", s[fd]);
-	return (0);
+	/*
+	**Ahora es cuando hacemos las comprobaciones que devuelve la funcion.
+	**Si de los x bytes mandados, encuentra el salto de linea y no es la última linea,
+	**la funcion devuelve un 1 (se ha leido una linea).
+	**Si encuentra el salto de linea y es la ultima linea del texto,
+	**la funcion devuelve 0 (Se ha leido todo el archivo).
+	**Para cualquier otro error, la función devuelve -1.
+	**Para esto nos vamos a otra función.
+	*/
+	return (ft_comp(bwr, fd, s, line));
 }
