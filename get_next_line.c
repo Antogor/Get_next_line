@@ -76,7 +76,7 @@ static int	ft_comp(int bwr, int fd, char **s, char **line)
 	**En el else if comprobamos que si los bytes leidos son 0 y que la posición acutal de s
 	**es nula, quiere decir que hemos encontrado el nulo del texto y lo hemos leido todo.
 	*/
-	else if (bwr == 0 && s[fd] == NULL)
+	else if (bwr == 0 || s[fd] == NULL)
 		return (0);
 	/*
 	**Para lo demás el resultado a devolver será 1. El problema es que hay que devolver 1
