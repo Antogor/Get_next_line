@@ -6,7 +6,7 @@
 /*   By: agarzon- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 14:16:05 by agarzon-          #+#    #+#             */
-/*   Updated: 2019/12/03 14:47:31 by agarzon-         ###   ########.fr       */
+/*   Updated: 2019/12/03 14:49:57 by agarzon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,11 @@ int		get_next_line(int fd, char **line)
 	**valor inicial, le hacemos los cambios pertinentes y a la siguiente vez que la llamemos
 	**tendrá el valor nuevo.
 	**Esta cadena es una array que va almacenar en cada posicion un file descriptor
-	**eso quiere decir que si tenemos s[1] va a hacer referencia al primer archivo leido.
-	**el 4096 es el limite de archivos que se pueden abrir. En realidad es una
+	**eso quiere decir que si tenemos s[3] va a hacer referencia al primer archivo leido.
+	**el 4096 es el limite de archivos que se pueden abrir. Y el primer archivo
+	**siempre va a ser 3 porque el 0, 1, y 2 estan reservados para la entrada, salida, 
+	**y errores respectivamente.
+	**Esta cadena en realidad es una
 	**ARRAY BIDIMENSIONAL
 	*/
 	static char *s[4096];
