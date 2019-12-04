@@ -42,24 +42,28 @@ static int	ft_comp_new_line(char **s, char **line)
 		/*
 		**Guardamos en la cadena que mandamos en el main la linea limpia.
 		**Para eso utilizamos la funcion substr. Mandamos el contenido de s, la posición 0
-		**de esa cadena, y tantos bytes para copiar como el tamaño de l, que es nuestro '\n'
+		**de esa cadena, y tantos bytes para copiar como el tamaño de l, que es el anterior
+		**a nuestro '\n'
 		*/
 		*line = ft_substr(*s, 0, l);
 		/*
-		**Con la cadena temporal hacemos un duplicado de lo que queda de cadena desde el
-		**primer '\n' encontrado. Liberamos los restos de s, y la dejamos solo con lo que queda.
+		**Con la cadena temporal hacemos un duplicado de los bytes restantes mandados,
+		**saltandonos el '\n' de la linea anterior.
+		**Liberamos los residuos de s, y la dejamos solo con lo que queda.
 		*/
-		tmp = ft_strdup(&(*s)[l]);
+		tmp = ft_strdup(&(*s)[l + 1]);
 		free(*s);
 		*s = tmp;
 	}
-	else
+	else if ((*s)[l] == '\0')
+	{
 		/*
 		**Si en vez de '\n' encontramos el '\0', solo duplicamos la s actual en la cadena
 		**que tenemos en el main.
 		*/
 		*line = ft_strdup(*s);
-	
+		return (0);
+	}
 	return (1);
 }
 
@@ -90,7 +94,6 @@ static int	ft_comp(int bwr, int fd, char **s, char **line)
 		**mandado la fila correspondiente), que son los bytes leidos hasta ahora.
 		*/
 		return (ft_comp_new_line(&s[fd], line));
-	
 }
 
 
