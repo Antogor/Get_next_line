@@ -106,7 +106,7 @@ int			get_next_line(int fd, char **line)
 	**esos bytes nos son dados a la hora de compilar con la bandera:
 	**gcc -D <nombre de la macro>=<valor que queremos darle>.
 	*/
-	char buff[BUFF_SIZE + 1];
+	char buff[BUFFER_SIZE + 1];
 	/*
 	**creamos una nueva cadena puntero para copiar las lineas leidas
 	**ya que las que se van a guaradar en nuestra cadena buff se van a ir sobreescribiendo.
@@ -145,7 +145,7 @@ int			get_next_line(int fd, char **line)
 	**el bucle volverá a empezar. !la cadena buff debe 
 	**tener la misma capacidad que los bytes leidos. 
 	*/
-	while ((bwr = read(fd, buff, BUFF_SIZE))) 
+	while ((bwr = read(fd, buff, BUFFER_SIZE))) 
 	{
 		/*
 		**al ponerle como posicion a la cadena buff el numero actual de bytes leidos
