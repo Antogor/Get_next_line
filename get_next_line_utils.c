@@ -6,13 +6,13 @@
 /*   By: agarzon- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 14:25:13 by agarzon-          #+#    #+#             */
-/*   Updated: 2019/12/03 17:12:00 by agarzon-         ###   ########.fr       */
+/*   Updated: 2019/12/05 10:47:59 by agarzon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t		ft_strlen(const char *s)
+size_t	ft_strlen(const char *s)
 {
 	int l;
 
