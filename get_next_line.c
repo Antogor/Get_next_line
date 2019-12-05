@@ -6,7 +6,7 @@
 /*   By: agarzon- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/05 10:42:41 by agarzon-          #+#    #+#             */
-/*   Updated: 2019/12/05 10:46:19 by agarzon-         ###   ########.fr       */
+/*   Updated: 2019/12/05 13:18:10 by agarzon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int			get_next_line(int fd, char **line)
 
 	if (fd < 0 || line == 0)
 		return (-1);
-	while ((bwr = read(fd, buff, BUFFER_SIZE)))
+	while (!(bwr = read(fd, buff, BUFFER_SIZE)))
 	{
 		buff[bwr] = '\0';
 		if (s[fd] == NULL)
