@@ -6,7 +6,7 @@
 /*   By: agarzon- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/05 10:42:41 by agarzon-          #+#    #+#             */
-/*   Updated: 2019/12/06 19:59:16 by agarzon-         ###   ########.fr       */
+/*   Updated: 2019/12/07 16:25:35 by agarzon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	ft_comp_new_line(char **s, char **line)
 	else if ((*s)[l] == '\0')
 	{
 		*line = ft_strdup(*s);
-		free(*s);
+		free (*s);
 		return (0);
 	}
 	return (1);
@@ -65,10 +65,9 @@ int			get_next_line(int fd, char **line)
 			s[fd] = ft_strdup(buff);
 		else
 		{
-			tmp = s[fd];
-			s[fd] = ft_strjoin(s[fd], buff);
-			free(tmp);
-			//s[fd] = tmp;
+			tmp = ft_strjoin(s[fd], buff);
+			free(s[fd]);
+			s[fd] = tmp;
 		}
 		if (ft_strchr(s[fd], '\n'))
 			break ;

@@ -24,6 +24,9 @@ int	main()
 //	printf("%s %d\n", a, b);
 	b = get_next_line(fd1, &a);
 	printf("%s %d\n", a, b);
+	fd1 = open("leer2.txt", O_RDONLY);
+	b = get_next_line(fd1, &a);
+	printf("%s %d\n", a, b);
 //	b = get_next_line(fd2, &a);
 //	printf("%s %d\n", a, b);
 //	b = get_next_line(fd2, &a);
