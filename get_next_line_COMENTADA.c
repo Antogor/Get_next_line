@@ -61,6 +61,14 @@ static int	ft_comp_new_line(char **s, char **line)
 		**que tenemos en el main.
 		*/
 		*line = ft_strdup(*s);
+		/*
+		**Borramos la última linea del texto leido para que no esté guardada en la variable
+		**estatica, cuando vayamos a leer otro texto. Igual a la liberación de s 
+		**de la función anterior. Tenemos que borrar lo que haya quedado en s por si al
+		**volver a llamar a la función con otro texto no mantenga la linea final del texto
+		**anterior leido.
+		*/
+		ft_bzero(*s, 1);
 		return (0);
 	}
 	return (1);
@@ -78,9 +86,14 @@ static int	ft_comp(int bwr, int fd, char **s, char **line)
 	/*
 	**En el else if comprobamos que si los bytes leidos son 0 y que la posición acutal de s
 	**es nula, quiere decir que hemos encontrado el nulo del texto y lo hemos leido todo.
+	**Liberamos s para que al llamar a la función con otros textos no guarde la ultima linea
+	**del texto ya leido.
 	*/
 	else if (bwr == 0 && s[fd] == NULL)
+	{
+		free(*s);
 		return (0);
+	}
 	/*
 	**Para lo demás el resultado a devolver será 1. El problema es que hay que devolver 1
 	**y la linea leida, por lo que todo caracter que vaya despues del '\n' encontrado,
@@ -142,10 +155,11 @@ int			get_next_line(int fd, char **line)
 	**dependiendo de los bytes que queden.
 	**Cada vuelta del bucle depende del numero de bytes que
 	**le hayamos dicho que lea, cuando llegue al maximo
-	**el bucle volverá a empezar. !la cadena buff debe 
+	**el bucle volverá a empezar hasta que llegue a 0 bytes leidos,
+	**que indicará que ha leido todo el archivo. !la cadena buff debe 
 	**tener la misma capacidad que los bytes leidos. 
 	*/
-	while ((bwr = read(fd, buff, BUFFER_SIZE))) 
+	while ((bwr = read(fd, buff, BUFFER_SIZE)) > 0) 
 	{
 		/*
 		**al ponerle como posicion a la cadena buff el numero actual de bytes leidos
