@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarzon- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/05 10:42:41 by agarzon-          #+#    #+#             */
-/*   Updated: 2019/12/06 11:32:49 by agarzon-         ###   ########.fr       */
+/*   Updated: 2019/12/09 14:29:17 by agarzon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static int	ft_comp_new_line(char **s, char **line)
 {
@@ -30,6 +30,7 @@ static int	ft_comp_new_line(char **s, char **line)
 	else if ((*s)[l] == '\0')
 	{
 		*line = ft_strdup(*s);
+		ft_bzero(*s, 1);
 		return (0);
 	}
 	return (1);
@@ -40,7 +41,10 @@ static int	ft_comp(int bwr, int fd, char **s, char **line)
 	if (bwr < 0)
 		return (-1);
 	else if (bwr == 0 && s[fd] == NULL)
+	{
+		free(*s);
 		return (0);
+	}
 	else
 		return (ft_comp_new_line(&s[fd], line));
 }
