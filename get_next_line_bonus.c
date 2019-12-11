@@ -6,7 +6,7 @@
 /*   By: agarzon- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/05 10:42:41 by agarzon-          #+#    #+#             */
-/*   Updated: 2019/12/11 10:18:56 by agarzon-         ###   ########.fr       */
+/*   Updated: 2019/12/11 17:23:17 by agarzon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ static int	ft_comp(int bwr, int fd, char **s, char **line)
 		return (-1);
 	else if (bwr == 0 && s[fd] == NULL)
 	{
+		*line = ft_strdup("");
 		free(*s);
 		return (0);
 	}
