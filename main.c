@@ -12,7 +12,7 @@ int	main()
 //	int fd3;
 	int b;
 
-	fd1 = open("leer.txt", O_RDONLY);
+	fd1 = open("shakespeare.txt", O_RDONLY);
 	fd2 = open("leer2.txt", O_RDONLY);
 //	fd3 = open(argv[1], O_RDONLY);
 //	b = get_next_line(fd3, &a);

@@ -6,7 +6,7 @@
 /*   By: agarzon- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/28 14:25:13 by agarzon-          #+#    #+#             */
-/*   Updated: 2019/12/09 14:27:07 by agarzon-         ###   ########.fr       */
+/*   Updated: 2019/12/11 10:18:25 by agarzon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,22 +106,4 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		substr[q++] = s[start++];
 	substr[q] = '\0';
 	return (substr);
-}
-
-void	ft_bzero(void *s, size_t n)
-{
-	unsigned char *l;
-
-	l = (unsigned char *)s;
-	if (n > 0)
-	{
-		while (n > 0)
-		{
-			*(l++) = '\0';
-			n--;
-		}
-	}
-	else if (n == 0)
-	{
-	}
 }

@@ -6,11 +6,29 @@
 /*   By: agarzon- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/05 10:42:41 by agarzon-          #+#    #+#             */
-/*   Updated: 2019/12/09 14:01:12 by agarzon-         ###   ########.fr       */
+/*   Updated: 2019/12/11 10:18:50 by agarzon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+void		ft_bzero(void *s, size_t n)
+{
+	unsigned char *l;
+
+	l = (unsigned char *)s;
+	if (n > 0)
+	{
+		while (n > 0)
+		{
+			*(l++) = '\0';
+			n--;
+		}
+	}
+	else if (n == 0)
+	{
+	}
+}
 
 static int	ft_comp_new_line(char **s, char **line)
 {
