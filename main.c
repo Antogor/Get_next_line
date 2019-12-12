@@ -31,6 +31,5 @@ int	main()
 //	printf("%s %d\n", a, b);
 //	b = get_next_line(fd2, &a);
 //	printf("%s %d\n", a, b);
-
 	return (0);
 }
