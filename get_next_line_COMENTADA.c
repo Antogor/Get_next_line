@@ -68,7 +68,8 @@ static int	ft_comp_new_line(char **s, char **line)
 		**volver a llamar a la función con otro texto no mantenga la linea final del texto
 		**anterior leido.
 		*/
-		ft_bzero(*s, 1);
+		free(*s);
+		*s = NULL;
 		return (0);
 	}
 	return (1);
@@ -85,13 +86,15 @@ static int	ft_comp(int bwr, int fd, char **s, char **line)
 		return (-1);
 	/*
 	**En el else if comprobamos que si los bytes leidos son 0 y que la posición acutal de s
-	**es nula, quiere decir que hemos encontrado el nulo del texto y lo hemos leido todo.
-	**Liberamos s para que al llamar a la función con otros textos no guarde la ultima linea
-	**del texto ya leido.
+	**es nula, quiere decir que nos ha han pasado un archivo vacio con una lina vacia.
+	**Por ello tenemos que hacer que Line sea una cadena vacia.
+	**Liberamos s para que al llamar a la función con otros textos no guarde lo ultimo.
 	*/
 	else if (bwr == 0 && s[fd] == NULL)
 	{
+		*line = ft_strdup("");
 		free(*s);
+		*s = NULL;
 		return (0);
 	}
 	/*
@@ -112,14 +115,10 @@ static int	ft_comp(int bwr, int fd, char **s, char **line)
 int			get_next_line(int fd, char **line)
 {
 	/*
-	**creamos una cadena que almacene los bytes leidos.
-	**Al sumarle + 1 aseguramos que siempre va a ver un byte mas
-	**para meter el nulo. 
-	**BUFF_SIZE es una macro que determina cuantos bytes se van a leer, en este caso
-	**esos bytes nos son dados a la hora de compilar con la bandera:
-	**gcc -D <nombre de la macro>=<valor que queremos darle>.
+	**creamos una cadena que almacene los bytes leidos. Para su tamaño es preferible
+	**hacerlo con malloc como hacemos mas adelante.
 	*/
-	char buff[BUFFER_SIZE + 1];
+	char *buff;
 	/*
 	**creamos una nueva cadena puntero para copiar las lineas leidas
 	**ya que las que se van a guaradar en nuestra cadena buff se van a ir sobreescribiendo.
@@ -143,9 +142,15 @@ int			get_next_line(int fd, char **line)
 	*/
 	int bwr;
 	/*
-	**comprobamos que lo que nos mandan no esta vacio
+	**Le damos tamaño a buff con un malloc del tamaño de la macro BUFFER_SIZE + 1 para
+	**aseguramos que siempre va a ver un byte mas para meter el nulo. 
+	**BUFF_SIZE es una macro que determina cuantos bytes se van a leer, en este caso
+	**esos bytes nos son dados a la hora de compilar con la bandera:
+	**gcc -D <nombre de la macro>=<valor que queremos darle>.
+	**Aprovechamos para hacerlo con la comprobación de errores, que lo que nos mandan no esta vacio
 	*/
-	if (fd < 0 || line == 0)
+	if (!(buff = malloc(sizeof(char) * (BUFFER_SIZE + 1)))
+		|| fd < 0 || line == 0)
 		return (-1);
 	/*
 	**creamos un bucle que indique que mientras el archivo exista 
@@ -206,6 +211,10 @@ int			get_next_line(int fd, char **line)
 		if (ft_strchr(s[fd], '\n'))
 			break ;
 	}
+	/*Liberamos buff ya que ha cumplido su función, siempre hay que liberar todo lo que se haga con malloc
+	*/
+	free(buff);
+	buff = NULL;
 	/*
 	**Ahora es cuando hacemos las comprobaciones que devuelve la funcion.
 	**Si de los x bytes mandados, encuentra el salto de linea y no es la última linea,
